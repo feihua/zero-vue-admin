@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/system/user/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import {tree} from "@/utils/utils";
 
 const getDefaultState = () => {
   return {
@@ -50,7 +51,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
-        const { name, avatar,menuTree } = response
+        const { name, avatar,menuTreeVue } = response
 
         // if (!data) {
         //   return reject('Verification failed, please Login again.')
@@ -71,9 +72,8 @@ const actions = {
         //   hidden: true
         // })
 
-        commit('SET_MENUS', menuTree)
-        console.log(menuTree,11111)
-        resolve(menuTree)
+        commit('SET_MENUS', tree(menuTreeVue,0,'parent_id'))
+        resolve(menuTreeVue)
       }).catch(error => {
         reject(error)
       })
