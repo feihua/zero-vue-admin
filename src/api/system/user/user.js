@@ -13,7 +13,7 @@ export function login(data) {
 export function getInfo() {
   return request({
     url: '/api/sys/user/currentUser',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -28,8 +28,8 @@ export function logout() {
 // 获取用户信息列表
 export function fetchList(query) {
   return request({
-    url: '/user/list',
-    method: 'post',
+    url: '/api/sys/user/list',
+    method: 'get',
     data: query
   })
 }

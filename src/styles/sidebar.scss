@@ -57,11 +57,6 @@
       margin-right: 16px;
     }
 
-    .sub-el-icon {
-      margin-right: 12px;
-      margin-left: -2px;
-    }
-
     .el-menu {
       border: none;
       height: 100%;
@@ -100,6 +95,10 @@
       margin-left: 54px;
     }
 
+    .svg-icon {
+      margin-right: 0px;
+    }
+
     .submenu-title-noDropdown {
       padding: 0 !important;
       position: relative;
@@ -109,10 +108,6 @@
 
         .svg-icon {
           margin-left: 20px;
-        }
-
-        .sub-el-icon {
-          margin-left: 19px;
         }
       }
     }
@@ -125,10 +120,6 @@
 
         .svg-icon {
           margin-left: 20px;
-        }
-
-        .sub-el-icon {
-          margin-left: 19px;
         }
 
         .el-submenu__icon-arrow {
@@ -190,10 +181,6 @@
   &>.el-menu {
     .svg-icon {
       margin-right: 16px;
-    }
-    .sub-el-icon {
-      margin-right: 12px;
-      margin-left: -2px;
     }
   }
 

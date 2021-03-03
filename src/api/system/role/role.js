@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/role/list',
-    method: 'post',
+    url: '/api/sys/role/list',
+    method: 'get',
     data: query
   })
 }

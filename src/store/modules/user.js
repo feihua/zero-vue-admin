@@ -32,7 +32,7 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // user loginlog
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {

@@ -2,22 +2,15 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/api/sys/menu/list',
-    method: 'get',
+    url: '/roleResources/list',
+    method: 'post',
     data: query
   })
 }
 
-export function deleteResources(id) {
+export function fetchRoleresources(id) {
   return request({
-    url: '/resources/delete/' + id,
-    method: 'get'
-  })
-}
-
-export function fetchResources(id) {
-  return request({
-    url: '/resources/find/detail' + id,
+    url: '/roleResources/find/detail/' + id,
     method: 'get'
   })
 }
@@ -30,17 +23,17 @@ export function fetchPv(pv) {
   })
 }
 
-export function createResources(data) {
+export function createRoleresources(data) {
   return request({
-    url: '/resources/add',
+    url: '/roleResources/add',
     method: 'post',
     data
   })
 }
 
-export function updateResources(data) {
+export function updateRoleresources(data) {
   return request({
-    url: '/resources/update',
+    url: '/roleResources/update',
     method: 'post',
     data
   })

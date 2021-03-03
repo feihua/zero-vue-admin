@@ -19,42 +19,62 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="名称">
+      <el-table-column label="用户名">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" width="95">
+      <el-table-column label="呢称" >
         <template slot-scope="scope">
-          <span>{{ scope.row.age }}</span>
+          <span>{{ scope.row.nick_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="手机号码">
         <template slot-scope="scope">
-          {{ scope.row.phone }}
+          {{ scope.row.mobile }}
         </template>
       </el-table-column>
-      <el-table-column label="邮件">
+      <el-table-column label="邮箱">
         <template slot-scope="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="备注">
+      <el-table-column label="状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
+          {{ scope.row.status }}
+        </template>
+      </el-table-column>
+      <el-table-column label="部门">
+        <template slot-scope="scope">
+          {{ scope.row.dept_id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建人">
+        <template slot-scope="scope">
+          {{ scope.row.create_by }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          <span>{{ new Date(scope.row.createTime).getTime() | TIME}}</span>
+          {{ scope.row.create_time }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
+      <el-table-column label="更新人">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_by }}
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="350" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(row)">
             编辑
@@ -218,14 +238,15 @@
     },
     created() {
       this.getList()
-      this.getRoleList()
+      // this.getRoleList()
     },
     methods: {
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.list
-          this.total = response.data.total
+          console.log(response.data)
+          this.list = response.data
+          this.total = response.total
           this.listLoading = false
         })
       },

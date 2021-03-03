@@ -20,36 +20,24 @@
       <el-table-column
         prop="name"
         label="权限名称"
+        sortable
        >
       </el-table-column>
-      <el-table-column label="路径">
-        <template slot-scope="scope">
-          {{ scope.row.url }}
-        </template>
+      <el-table-column
+        prop="remarks"
+        label="备注"
+        sortable
+       >
       </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
-        </template>
+      <el-table-column
+        prop="createBy"
+        label="创建者"
+        sortable
+       >
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新人">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          <span>{{ new Date(scope.row.createTime).getTime() | TIME}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
