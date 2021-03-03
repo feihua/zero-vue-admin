@@ -36,9 +36,9 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ userName: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data)
-        setToken(data)
+        const { token } = response
+        commit('SET_TOKEN', "Bearer " + token)
+        setToken("Bearer " + token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -49,14 +49,14 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      getInfo().then(response => {
+        const { name, avatar,menuTree } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
+        // if (!data) {
+        //   return reject('Verification failed, please Login again.')
+        // }
 
-        const { name, avatar,resources } = data
+        // const { name, avatar,resources } = data
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
@@ -71,9 +71,9 @@ const actions = {
         //   hidden: true
         // })
 
-        commit('SET_MENUS', resources)
-        console.log(resources,11111)
-        resolve(data)
+        commit('SET_MENUS', menuTree)
+        console.log(menuTree,11111)
+        resolve(menuTree)
       }).catch(error => {
         reject(error)
       })

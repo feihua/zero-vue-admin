@@ -10,11 +10,10 @@ export function login(data) {
 }
 
 // 根据token获取用户信息
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/user/info',
+    url: '/api/sys/user/currentUser',
     method: 'get',
-    params: { token }
   })
 }
 
