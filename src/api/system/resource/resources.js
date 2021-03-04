@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function fetchList(query) {
   return request({
     url: '/api/sys/menu/list',
-    method: 'get',
+    method: 'post',
     data: query
   })
 }

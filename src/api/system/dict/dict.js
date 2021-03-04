@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/api/sys/menu/list',
-    method: 'get',
+    url: '/api/sys/dict/list',
+    method: 'post',
     data: query
   })
 }

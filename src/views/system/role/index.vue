@@ -95,7 +95,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -191,7 +191,7 @@
         total: 0,
         listLoading: true,
         listQuery: {
-          pageNum: 1,
+          current: 1,
           pageSize: 10,
           name: '',
           createBy: '',
@@ -235,7 +235,7 @@
         },
         downloadLoading: false,
         treeListQuery: {
-          pageNum: 1,
+          current: 1,
           pageSize: 10000
         },
         roleResource: {
@@ -263,7 +263,7 @@
         })
       },
       handleFilter() {
-        this.listQuery.pageNum = 1
+        this.listQuery.current = 1
         this.getList()
       },
       handleModifyStatus(row, status) {

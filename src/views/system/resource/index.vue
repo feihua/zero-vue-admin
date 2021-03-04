@@ -15,8 +15,12 @@
       row-key="id"
       border
       highlight-current-row
-      default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+      <el-table-column
+        prop="id"
+        label="Id"
+      >
+      </el-table-column>
       <el-table-column
         prop="name"
         label="权限名称"
@@ -25,6 +29,16 @@
       <el-table-column label="路径">
         <template slot-scope="scope">
           {{ scope.row.url }}
+        </template>
+      </el-table-column>
+      <el-table-column label="类型">
+        <template slot-scope="scope">
+          {{ scope.row.type }}
+        </template>
+      </el-table-column>
+      <el-table-column label="排序">
+        <template slot-scope="scope">
+          {{ scope.row.order_num }}
         </template>
       </el-table-column>
       <el-table-column label="创建人">
@@ -54,14 +68,14 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" icon="el-icon-zoom-in" @click="handleCreate(row)">
+          <el-button type="primary" size="mini" @click="handleCreate(row)">
             添加
           </el-button>
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
 
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(row)">
+          <el-button size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -96,11 +110,13 @@
 <script>
   import { fetchList, createResources, deleteResources, updateResources } from '@/api/system/resource/resources'
   import { parseTime } from '@/utils'
+  import {tree} from "@/utils/utils";
+
   export default {
     methods: {
       getList() {
         fetchList(this.listQuery).then(response => {
-          this.tableData = response.data
+          this.tableData = tree(response.data,0,'parent_id')
         })
       },
       handleCreate(row) {
@@ -239,7 +255,7 @@
         dialogStatus: '',
         dialogFormVisible: false,
         listQuery: {
-          pageNum: 1,
+          current: 1,
           pageSize: 10000
 
         }

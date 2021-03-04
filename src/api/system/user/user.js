@@ -29,7 +29,7 @@ export function logout() {
 export function fetchList(query) {
   return request({
     url: '/api/sys/user/list',
-    method: 'get',
+    method: 'post',
     data: query
   })
 }

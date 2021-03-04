@@ -19,57 +19,79 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="名称">
+      <el-table-column label="数据值">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.value }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" width="95">
+      <el-table-column label="标签名" >
         <template slot-scope="scope">
-          <span>{{ scope.row.age }}</span>
+          <span>{{ scope.row.label }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.phone }}
+          {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column label="邮件">
+      <el-table-column label="描述">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="备注">
+      <el-table-column label="排序">
         <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
+          {{ scope.row.sort }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          {{ scope.row.del_flag }}
+        </template>
+      </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="scope">
+          {{ scope.row.remarks }}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建人">
+        <template slot-scope="scope">
+          {{ scope.row.create_by }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          <span>{{ new Date(scope.row.createTime).getTime() | TIME}}</span>
+          {{ scope.row.create_time }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
+      <el-table-column label="更新人">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_by }}
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini"  @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" icon="el-icon-user" @click="handleRoleUpdate(row)">
-            分配角色
-          </el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(row)">
+          <el-button size="mini" type="danger"  @click="handleDelete(row)">
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList"/>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.pageSize" @pagination="getList"/>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -102,46 +124,14 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogRoleVisible" title="分配角色" width="20%">
-      <el-select v-model="userRole.roleId" placeholder="请选择角色">
-        <el-option
-          v-for="item in options"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-          :disabled="item.disabled">
-        </el-option>
-      </el-select>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogRoleVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="updateRoleData()">确认分配角色</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { createUser, deleteUser, fetchList, fetchPv, updateUser,updateUserRole } from '@/api/system/user/user'
+  import { createUser, deleteUser, fetchList, fetchPv, updateUser } from '@/api/system/dict/dict'
   import { fetchList as roleList } from '@/api/system/role/role'
 
-  // import waves from '@/directive/waves' // waves directive
-  import { parseTime } from '@/utils/'
-  import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-
-  const calendarTypeOptions = [
-    { key: 'CN', display_name: 'China' },
-    { key: 'US', display_name: 'USA' },
-    { key: 'JP', display_name: 'Japan' },
-    { key: 'EU', display_name: 'Eurozone' }
-  ]
-
-  // arr to obj, such as { CN : "China", US : "USA" }
-  const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-    acc[cur.key] = cur.display_name
-    return acc
-  }, {})
+  import Pagination from '@/components/Pagination'
 
   export default {
     name: 'ComplexTable',
@@ -170,7 +160,7 @@
         total: 0,
         listLoading: true,
         listQuery: {
-          pageNum: 1,
+          current: 1,
           pageSize: 10,
           name: '',
           phone: '',
@@ -180,9 +170,6 @@
           sort: '+id'
         },
         importanceOptions: [1, 2, 3],
-        calendarTypeOptions,
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
         temp: {
           id: undefined,
@@ -218,7 +205,6 @@
     },
     created() {
       this.getList()
-      // this.getRoleList()
     },
     methods: {
       getList() {
@@ -231,7 +217,7 @@
         })
       },
       handleFilter() {
-        this.listQuery.pageNum = 1
+        this.listQuery.current = 1
         this.getList()
       },
       handleModifyStatus(row, status) {
@@ -241,20 +227,7 @@
         })
         row.status = status
       },
-      sortChange(data) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          this.sortByID(order)
-        }
-      },
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = '+id'
-        } else {
-          this.listQuery.sort = '-id'
-        }
-        this.handleFilter()
-      },
+
       resetTemp() {
         this.temp = {
           id: undefined,
@@ -346,48 +319,8 @@
           })
         })
       },
-      handleFetchPv(pv) {
-        fetchPv(pv).then(response => {
-          this.pvData = response.data.pvData
-          this.dialogPvVisible = true
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        }))
-      },
-      handleRoleUpdate(row) {
-
-        this.dialogRoleVisible = true
-       this.userRole.userId=row.id
-      },
-      updateRoleData() {
-        console.log(this.userRole)
-        updateUserRole(this.userRole).then(() => {
-          this.dialogRoleVisible = false
-          this.$notify({
-            title: '成功',
-            message: '更新成功',
-            type: 'success'
-            // duration: 2000
-          })
-        })
-      },
-      getRoleList() {
-
-        roleList(this.listQuery).then(response => {
-          // this.list = response.data.list
-          // this.total = response.data.total
-          this.options=response.data.list
 
 
-        })
-      },
     }
   }
 </script>
