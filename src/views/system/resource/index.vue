@@ -13,7 +13,6 @@
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"
       row-key="id"
-      border
       highlight-current-row
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column

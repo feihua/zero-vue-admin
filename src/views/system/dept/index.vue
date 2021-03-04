@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="机构名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.phone" placeholder="创建人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.create_by" placeholder="创建人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -16,7 +16,6 @@
       :data="list"
       element-loading-text="Loading"
       row-key="id"
-      border
       fit
       highlight-current-row
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -61,7 +60,7 @@
           {{ scope.row.last_update_time }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="350" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -162,7 +161,7 @@
           current: 1,
           pageSize: 10,
           name: '',
-          phone: '',
+          create_by: '',
           importance: undefined,
           title: undefined,
           type: undefined,

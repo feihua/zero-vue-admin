@@ -8,3 +8,10 @@ export function fetchList(query) {
   })
 }
 
+export function deleteUser(id) {
+  return request({
+    url: '/api/sys/loginLog/delete',
+    method: 'post',
+    data: id
+  })
+}

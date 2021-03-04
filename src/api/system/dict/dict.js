@@ -8,39 +8,26 @@ export function fetchList(query) {
   })
 }
 
-export function deleteResources(id) {
+export function deleteDict(id) {
   return request({
-    url: '/resources/delete/' + id,
-    method: 'get'
+    url: '/api/sys/dict/delete',
+    method: 'post',
+    data: id
   })
 }
 
-export function fetchResources(id) {
-  return request({
-    url: '/resources/find/detail' + id,
-    method: 'get'
-  })
-}
 
-export function fetchPv(pv) {
+export function createDict(data) {
   return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createResources(data) {
-  return request({
-    url: '/resources/add',
+    url: '/api/sys/dict/add',
     method: 'post',
     data
   })
 }
 
-export function updateResources(data) {
+export function updateDict(data) {
   return request({
-    url: '/resources/update',
+    url: '/api/sys/dict/update',
     method: 'post',
     data
   })

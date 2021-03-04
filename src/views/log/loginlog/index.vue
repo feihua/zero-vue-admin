@@ -11,7 +11,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
     >
@@ -120,7 +119,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser(row.id).then(response => {
+          deleteUser({id:row.id}).then(response => {
             this.getList()
             this.$message({
               type: 'success',

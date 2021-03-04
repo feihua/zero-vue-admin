@@ -15,7 +15,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
     >
@@ -74,15 +73,15 @@
           {{ scope.row.last_update_time }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="350" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini"  @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" icon="el-icon-user" @click="handleRoleUpdate(row)">
-            分配角色
-          </el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(row)">
+<!--          <el-button type="primary" size="mini"  @click="handleRoleUpdate(row)">-->
+<!--            分配角色-->
+<!--          </el-button>-->
+          <el-button size="mini" type="danger"  @click="handleDelete(row)">
             删除
           </el-button>
         </template>

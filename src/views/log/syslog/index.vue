@@ -11,7 +11,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
     >
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-  import { deleteUser, fetchList} from '@/api/log/syslog'
+  import { deleteSysLogin, fetchList} from '@/api/log/syslog'
 
   import Pagination from '@/components/Pagination'
 
@@ -163,7 +162,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser(row.id).then(response => {
+          deleteSysLogin({id:row.id}).then(response => {
             this.getList()
             this.$message({
               type: 'success',

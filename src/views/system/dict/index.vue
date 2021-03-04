@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.value" placeholder="数据值" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.type" placeholder="类型" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -15,7 +15,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
     >
@@ -95,23 +94,26 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名字" prop="name">
-          <el-input v-model="temp.name"/>
+        <el-form-item label="数据值" prop="value">
+          <el-input v-model="temp.value"/>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="temp.age"/>
+        <el-form-item label="标签名" prop="label">
+          <el-input v-model="temp.label"/>
         </el-form-item>
-        <el-form-item label="手机" prop="phone">
-          <el-input v-model="temp.phone"/>
+        <el-form-item label="类型" prop="type">
+          <el-input v-model="temp.type"/>
         </el-form-item>
-        <el-form-item label="邮件" prop="email">
-          <el-input v-model="temp.email"/>
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="temp.description"/>
+        </el-form-item>
+        <el-form-item label="排序" prop="prop">
+          <el-input v-model="temp.sort"/>
+        </el-form-item>
+        <el-form-item label="状态" prop="del_flag">
+          <el-input v-model="temp.del_flag"/>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input"/>
-        </el-form-item>
-        <el-form-item label="日期" prop="createTime">
-          <el-date-picker v-model="temp.createTime" type="datetime" placeholder="Please pick a date"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -128,8 +130,7 @@
 </template>
 
 <script>
-  import { createUser, deleteUser, fetchList, fetchPv, updateUser } from '@/api/system/dict/dict'
-  import { fetchList as roleList } from '@/api/system/role/role'
+  import { createDict, deleteDict, fetchList, updateDict } from '@/api/system/dict/dict'
 
   import Pagination from '@/components/Pagination'
 
@@ -162,23 +163,23 @@
         listQuery: {
           current: 1,
           pageSize: 10,
-          name: '',
-          phone: '',
+          value: '',
+          type: '',
           importance: undefined,
           title: undefined,
-          type: undefined,
           sort: '+id'
         },
         importanceOptions: [1, 2, 3],
         showReviewer: false,
         temp: {
           id: undefined,
-          importance: 1,
-          remarks: '',
-          timestamp: new Date(),
-          title: '',
-          type: '',
-          status: 'published'
+          del_flag: 0,
+          description: "",
+          label: "",
+          remarks: "",
+          sort: 0,
+          type: "",
+          value: "",
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -251,8 +252,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.temp.author = 'vue-element-admin'
-            createUser(this.temp).then(() => {
+            createDict(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.getList()
               this.dialogFormVisible = false
@@ -280,7 +280,7 @@
           if (valid) {
             const tempData = Object.assign({}, this.temp)
             tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-            updateUser(tempData).then(() => {
+            updateDict(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
@@ -305,7 +305,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser(row.id).then(response => {
+          deleteDict({id:row.id}).then(response => {
             this.getList()
             this.$message({
               type: 'success',

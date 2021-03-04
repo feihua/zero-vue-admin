@@ -8,3 +8,10 @@ export function fetchList(query) {
   })
 }
 
+export function deleteSysLogin(id) {
+  return request({
+    url: '/api/sys/sysLog/delete',
+    method: 'post',
+    data: id
+  })
+}

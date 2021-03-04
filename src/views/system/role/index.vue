@@ -30,7 +30,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
     >
@@ -82,13 +81,13 @@
 <!--      </el-table-column>-->
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" icon="el-icon-user" @click="handleResourceUpdate(row)">
-            分配权限
+          <el-button type="primary" size="mini" @click="handleResourceUpdate(row)">
+            分权限
           </el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(row)">
+          <el-button size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
