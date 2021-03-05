@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.nick_name" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -92,23 +93,34 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名字" prop="name">
+        <el-form-item label="用名字" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="temp.age"/>
+        <el-form-item label="呢称" prop="nick_name">
+          <el-input v-model="temp.nick_name"/>
         </el-form-item>
-        <el-form-item label="手机" prop="phone">
-          <el-input v-model="temp.phone"/>
+        <el-form-item label="手机" prop="mobile">
+          <el-input v-model="temp.mobile"/>
         </el-form-item>
         <el-form-item label="邮件" prop="email">
           <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input"/>
+        <el-form-item label="部门" prop="dept_id">
+          <el-input v-model="temp.dept_id"/>
         </el-form-item>
-        <el-form-item label="日期" prop="createTime">
-          <el-date-picker v-model="temp.createTime" type="datetime" placeholder="Please pick a date"/>
+        <el-form-item label="状态" prop="status">
+        <el-radio v-model="temp.status" label="1">正常</el-radio>
+        <el-radio v-model="temp.status" label="0">禁用</el-radio>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleId">
+        <el-select v-model="temp.roleId" placeholder="请选择角色">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.remark"
+            :value="item.id">
+          </el-option>
+        </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,7 +138,7 @@
         <el-option
           v-for="item in options"
           :key="item.id"
-          :label="item.name"
+          :label="item.nick_name"
           :value="item.id"
           :disabled="item.disabled">
         </el-option>
@@ -193,13 +205,13 @@
           pageSize: 10,
           name: '',
           phone: '',
+          nick_name: '',
           importance: undefined,
           title: undefined,
           type: undefined,
           sort: '+id'
         },
         importanceOptions: [1, 2, 3],
-        calendarTypeOptions,
         sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
         statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
@@ -207,10 +219,15 @@
           id: undefined,
           importance: 1,
           remarks: '',
-          timestamp: new Date(),
           title: '',
+          email: '',
           type: '',
-          status: 'published'
+          mobile: '',
+          nick_name: '',
+          status: '',
+          roleId: '',
+          role_id: '',
+          dept_id: undefined,
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -237,7 +254,7 @@
     },
     created() {
       this.getList()
-      // this.getRoleList()
+      this.getRoleList()
     },
     methods: {
       getList() {
@@ -298,6 +315,7 @@
           if (valid) {
             // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
             this.temp.author = 'vue-element-admin'
+            this.temp.role_id = this.temp.roleId+''
             createUser(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.getList()
@@ -314,7 +332,7 @@
       },
       handleUpdate(row) {
         this.temp = Object.assign({}, row) // copy obj
-        this.temp.timestamp = new Date(this.temp.timestamp)
+        this.temp.status = row.status+''
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -325,7 +343,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+            tempData.role_id = this.temp.roleId+''
             updateUser(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
@@ -402,7 +420,7 @@
         roleList(this.listQuery).then(response => {
           // this.list = response.data.list
           // this.total = response.data.total
-          this.options=response.data.list
+          this.options=response.data
 
 
         })

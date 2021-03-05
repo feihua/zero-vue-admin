@@ -45,7 +45,7 @@ export function fetchUser(id) {
 // 添加用户信息
 export function createUser(data) {
   return request({
-    url: '/user/add',
+    url: '/api/sys/user/add',
     method: 'post',
     data
   })
@@ -54,7 +54,7 @@ export function createUser(data) {
 // 更新用户信息
 export function updateUser(data) {
   return request({
-    url: '/user/update',
+    url: '/api/sys/user/update',
     method: 'post',
     data
   })

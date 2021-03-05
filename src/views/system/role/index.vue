@@ -2,6 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="角色名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.name" placeholder="状态" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.createBy" placeholder="创建者" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 <!--      <el-select v-model="listQuery.importance" :placeholder="重要性" clearable style="width: 90px" class="filter-item">-->
 <!--        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />-->

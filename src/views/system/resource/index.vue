@@ -1,13 +1,15 @@
 <template>
   <div class="app-container">
-<!--    <div class="filter-container">-->
-<!--      <el-input v-model="listQuery.name" placeholder="角色名" style="width: 200px;" class="filter-item" @keyup.enter.native="" />-->
-<!--      <el-input v-model="listQuery.createBy" placeholder="创建者" style="width: 200px;" class="filter-item" @keyup.enter.native="" />-->
-<!--      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="">-->
-<!--        查询-->
-<!--      </el-button>-->
-
-<!--    </div>-->
+    <div class="filter-container">
+      <el-input v-model="listQuery.name" placeholder="权限名称" style="width: 200px;" class="filter-item" @keyup.enter.native="" />
+      <el-input v-model="listQuery.createBy" placeholder="路径" style="width: 200px;" class="filter-item" @keyup.enter.native="" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="">
+        查询
+      </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="">
+        添加
+      </el-button>
+    </div>
 
     <el-table
       :data="tableData"
