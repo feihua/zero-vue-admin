@@ -8,39 +8,25 @@ export function fetchList(query) {
   })
 }
 
-export function deleteResources(id) {
+export function deleteDept(id) {
   return request({
-    url: '/resources/delete/' + id,
-    method: 'get'
+    url: '/api/sys/dept/delete',
+    method: 'post',
+    data: {id:id}
   })
 }
 
-export function fetchResources(id) {
+export function createDept(data) {
   return request({
-    url: '/resources/find/detail' + id,
-    method: 'get'
-  })
-}
-
-export function fetchPv(pv) {
-  return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createResources(data) {
-  return request({
-    url: '/resources/add',
+    url: '/api/sys/dept/add',
     method: 'post',
     data
   })
 }
 
-export function updateResources(data) {
+export function updateDept(data) {
   return request({
-    url: '/resources/update',
+    url: '/api/sys/dept/update',
     method: 'post',
     data
   })

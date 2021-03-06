@@ -6,7 +6,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreateWithOutPid">
         添加
       </el-button>
     </div>
@@ -27,6 +27,11 @@
         label="权限名称"
        >
       </el-table-column>
+      <el-table-column label="父id" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.parent_id }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="路径">
         <template slot-scope="scope">
           {{ scope.row.url }}
@@ -35,6 +40,11 @@
       <el-table-column label="类型">
         <template slot-scope="scope">
           {{ scope.row.type }}
+        </template>
+      </el-table-column>
+      <el-table-column label="图标">
+        <template slot-scope="scope">
+          {{ scope.row.icon }}
         </template>
       </el-table-column>
       <el-table-column label="排序">
@@ -85,14 +95,17 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名字" prop="name">
+        <el-form-item label="权限名称" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input"/>
+        <el-form-item label="路径" prop="url">
+          <el-input v-model="temp.url" />
         </el-form-item>
-        <el-form-item label="日期" prop="createTime">
-          <el-date-picker v-model="temp.createTime" type="datetime" placeholder="Please pick a date"/>
+        <el-form-item label="类型" prop="type">
+          <el-input v-model="temp.type"/>
+        </el-form-item>
+        <el-form-item label="排序" prop="order_num">
+          <el-input v-model="temp.order_num" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -118,6 +131,14 @@
       getList() {
         fetchList(this.listQuery).then(response => {
           this.tableData = tree(response.data,0,'parent_id')
+        })
+      },
+      handleCreateWithOutPid() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
         })
       },
       handleCreate(row) {
@@ -181,8 +202,8 @@
         })
       },
       handleDelete(row) {
-        console.log(row.children.length)
-        if (row.children.length>0){
+        console.log(row.children)
+        if (row.children){
           this.$message({
             showClose: true,
             message: '警告哦，包含子项不能直接删除',

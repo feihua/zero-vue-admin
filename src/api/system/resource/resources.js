@@ -10,29 +10,15 @@ export function fetchList(query) {
 
 export function deleteResources(id) {
   return request({
-    url: '/resources/delete/' + id,
-    method: 'get'
-  })
-}
-
-export function fetchResources(id) {
-  return request({
-    url: '/resources/find/detail' + id,
-    method: 'get'
-  })
-}
-
-export function fetchPv(pv) {
-  return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
+    url: '/api/sys/menu/delete/',
+    method: 'post',
+    data: {id:id}
   })
 }
 
 export function createResources(data) {
   return request({
-    url: '/resources/add',
+    url: '/api/sys/menu/add',
     method: 'post',
     data
   })
@@ -40,7 +26,7 @@ export function createResources(data) {
 
 export function updateResources(data) {
   return request({
-    url: '/resources/update',
+    url: '/api/sys/menu/update',
     method: 'post',
     data
   })

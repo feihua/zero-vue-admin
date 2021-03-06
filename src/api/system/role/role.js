@@ -10,8 +10,9 @@ export function fetchList(query) {
 
 export function deleteRole(id) {
   return request({
-    url: '/role/delete/' + id,
-    method: 'get'
+    url: '/api/sys/role/delete' + id,
+    method: 'post',
+    data:id
   })
 }
 
@@ -25,7 +26,7 @@ export function fetchPv(pv) {
 
 export function createRole(data) {
   return request({
-    url: '/role/add',
+    url: '/api/sys/role/add',
     method: 'post',
     data
   })
@@ -33,7 +34,7 @@ export function createRole(data) {
 
 export function updateRole(data) {
   return request({
-    url: '/role/update',
+    url: '/api/sys/role/update',
     method: 'post',
     data
   })

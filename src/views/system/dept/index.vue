@@ -62,7 +62,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini" @click="handleCreateChild(row)">
             添加
           </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -79,23 +79,11 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名字" prop="name">
+        <el-form-item label="机构名称" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="temp.age"/>
-        </el-form-item>
-        <el-form-item label="手机" prop="phone">
-          <el-input v-model="temp.phone"/>
-        </el-form-item>
-        <el-form-item label="邮件" prop="email">
-          <el-input v-model="temp.email"/>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input"/>
-        </el-form-item>
-        <el-form-item label="日期" prop="createTime">
-          <el-date-picker v-model="temp.createTime" type="datetime" placeholder="Please pick a date"/>
+        <el-form-item label="排序" prop="order_num">
+          <el-input v-model="temp.order_num"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -129,7 +117,7 @@
 </template>
 
 <script>
-  import { createUser, deleteUser, fetchList, fetchPv, updateUser } from '@/api/system/dept/dept'
+  import { createDept, deleteDept, fetchList, fetchPv, updateDept } from '@/api/system/dept/dept'
   import {tree} from "@/utils/utils";
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -181,7 +169,10 @@
           timestamp: new Date(),
           title: '',
           type: '',
-          status: 'published'
+          status: 'published',
+          name: '',
+          order_num: 0,
+          parent_id: 0,
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -214,7 +205,7 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log(response.data)
+          console.log(response.data,66666)
           this.list = tree(response.data,0,'parent_id')
           this.listLoading = false
         })
@@ -259,6 +250,16 @@
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
+        this.temp.parent_id=0
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      handleCreateChild(row) {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.temp.parent_id=Number(row.id)
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -266,9 +267,9 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.temp.author = 'vue-element-admin'
-            createUser(this.temp).then(() => {
+            this.temp.order_num=Number(this.temp.order_num)
+            console.log(this.temp,321232)
+            createDept(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.getList()
               this.dialogFormVisible = false
@@ -283,9 +284,9 @@
         })
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
-        this.temp.timestamp = new Date(this.temp.timestamp)
+        this.temp = Object.assign({}, row)
         this.dialogStatus = 'update'
+        // this.temp.parent_id=Number(this.temp.parent_id)
         this.dialogFormVisible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
@@ -295,8 +296,9 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
+            tempData.order_num=Number(this.temp.order_num)
             tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-            updateUser(tempData).then(() => {
+            updateDept(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
@@ -304,6 +306,7 @@
                   break
                 }
               }
+              this.getList()
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -316,12 +319,21 @@
         })
       },
       handleDelete(row) {
+        if (row.children){
+          this.$message({
+            showClose: true,
+            message: '警告哦，包含子项不能直接删除',
+            type: 'warning'
+          });
+          return
+        }
+        console.log(row)
         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser(row.id).then(response => {
+          deleteDept(row.id).then(response => {
             this.getList()
             this.$message({
               type: 'success',

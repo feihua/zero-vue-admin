@@ -71,7 +71,8 @@ export function updateUserRole(data) {
 
 export function deleteUser(id) {
   return request({
-    url: '/user/delete/'+id,
-    method: 'get'
+    url: '/user/delete/',
+    method: 'post',
+    data:id
   })
 }
