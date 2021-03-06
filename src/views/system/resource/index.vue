@@ -34,7 +34,17 @@
       </el-table-column>
       <el-table-column label="路径">
         <template slot-scope="scope">
-          {{ scope.row.url }}
+          {{ scope.row.vue_path }}
+        </template>
+      </el-table-column>
+      <el-table-column label="页面">
+        <template slot-scope="scope">
+          {{ scope.row.vue_component }}
+        </template>
+      </el-table-column>
+      <el-table-column label="重定向">
+        <template slot-scope="scope">
+          {{ scope.row.vue_redirect }}
         </template>
       </el-table-column>
       <el-table-column label="类型">
@@ -44,7 +54,7 @@
       </el-table-column>
       <el-table-column label="图标">
         <template slot-scope="scope">
-          {{ scope.row.icon }}
+          {{ scope.row.vue_icon }}
         </template>
       </el-table-column>
       <el-table-column label="排序">
@@ -98,8 +108,17 @@
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="路径" prop="url">
-          <el-input v-model="temp.url" />
+        <el-form-item label="路径" prop="vue_path">
+          <el-input v-model="temp.vue_path" />
+        </el-form-item>
+        <el-form-item label="页面" prop="vue_component">
+          <el-input v-model="temp.vue_component" />
+        </el-form-item>
+        <el-form-item label="重定向" prop="vue_redirect">
+          <el-input v-model="temp.vue_redirect" />
+        </el-form-item>
+        <el-form-item label="图标" prop="vue_icon">
+          <el-input v-model="temp.vue_icon" />
         </el-form-item>
         <el-form-item label="类型" prop="type">
           <el-input v-model="temp.type"/>
@@ -137,6 +156,7 @@
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
+        this.temp.parent_id=0
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -145,6 +165,7 @@
         this.resetTemp()
         this.temp.pid=row.id
         console.log(this.temp.pid)
+        this.temp.parent_id=Number(row.id)
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -154,9 +175,8 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.temp.author = 'vue-element-admin'
-            console.log(this.temp)
+            this.temp.order_num=Number(this.temp.order_num)
+            this.temp.type=Number(this.temp.type)
             createResources(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.dialogFormVisible = false
@@ -172,10 +192,7 @@
         })
       },
       handleUpdate(row) {
-        this.temp.name=row.name
-        this.temp.id=row.id
-        this.temp.remarks=row.remarks
-        this.temp.timestamp = new Date(this.temp.timestamp)
+        this.temp = Object.assign({}, row)
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
 
@@ -264,10 +281,16 @@
           remarks: '',
           timestamp: new Date(),
           title: '',
-          type: '',
+          type: 0,
           name: '',
           status: 'published',
-          pid: ''
+          pid: '',
+          vue_path: '',
+          vue_component: '',
+          vue_icon: '',
+          vue_redirect: '',
+          parent_id: 0,
+          order_num: 0,
         },
         pid: '',
         textMap: {
