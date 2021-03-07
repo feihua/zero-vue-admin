@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="角色名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.name" placeholder="状态" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.status" placeholder="状态" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.createBy" placeholder="创建者" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 <!--      <el-select v-model="listQuery.importance" :placeholder="重要性" clearable style="width: 90px" class="filter-item">-->
 <!--        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />-->
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-          {{ scope.row.del_flag }}
+          {{ scope.row.status }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="备注" >
@@ -102,14 +102,12 @@
         <el-form-item label="角色名" prop="name">
             <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item label="创建者" prop="name">
-          <el-input v-model="temp.createBy" />
+        <el-form-item label="状态" prop="status">
+          <el-radio v-model="temp.status" label="1">正常</el-radio>
+          <el-radio v-model="temp.status" label="0">禁用</el-radio>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
-          <el-date-picker v-model="temp.createTime" type="datetime" placeholder="Please pick a date" />
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -124,7 +122,7 @@
 
     <el-dialog :visible.sync="dialogResourceVisible" title="分配权限">
       <el-tree
-        :data="treeList"
+        :data="treeDataList"
         show-checkbox
         node-key="id"
         ref="tree"
@@ -149,7 +147,8 @@
   // import waves from '@/directive/waves' // waves directive
   import { parseTime } from '@/utils'
   import Pagination from '@/components/Pagination'
-  import { fetchList as treeList } from '@/api/system/resource/resources'
+  import { fetchList as treeList,updateRoleMenu } from '@/api/system/role/roleresources'
+  import {tree} from "@/utils/utils";
 
   const calendarTypeOptions = [
     { key: 'CN', display_name: 'China' },
@@ -198,21 +197,20 @@
           importance: undefined,
           title: undefined,
           type: undefined,
-          sort: '+id'
+          status: ''
         },
         importanceOptions: [1, 2, 3],
-        calendarTypeOptions,
         sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
         statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
         temp: {
           id: undefined,
           importance: 1,
-          remarks: '',
+          remark: '',
           timestamp: new Date(),
           title: '',
           type: '',
-          status: 'published'
+          status: '1'
         },
         dialogFormVisible: false,
         dialogResourceVisible: false,
@@ -228,10 +226,10 @@
           timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
           title: [{ required: true, message: 'title is required', trigger: 'blur' }]
         },
-        treeList: [],
+        treeDataList: [],
         defaultProps: {
           children: 'children',
-          label: 'name'
+          label: 'label'
         },
         downloadLoading: false,
         treeListQuery: {
@@ -239,15 +237,14 @@
           pageSize: 10000
         },
         roleResource: {
-          roleId: '',
-          resourcesIds: ''
+          role_id: '',
+          menu_ids: ''
         },
         defaultCheckedKeys: []
       }
     },
     created() {
       this.getList()
-      this.getTreeList()
     },
     methods: {
       getList() {
@@ -302,6 +299,7 @@
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
+        this.temp.status = '1'
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -310,7 +308,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.temp.author = 'vue-element-admin'
+            this.temp.status = Number(this.temp.status)
             createRole(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.getList()
@@ -327,7 +325,7 @@
       },
       handleUpdate(row) {
         this.temp = Object.assign({}, row) // copy obj
-        this.temp.timestamp = new Date(this.temp.timestamp)
+        this.temp.status = row.status+''
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -338,7 +336,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+            tempData.status = Number(this.temp.status)
             updateRole(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
@@ -407,38 +405,39 @@
           }
         }))
       },
-      getTreeList() {
-        treeList(this.treeListQuery).then(response => {
-          this.treeList = response.data.list
-
-        })
-      },
       handleResourceUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
-        this.temp.timestamp = new Date(this.temp.timestamp)
+        treeList(row.id).then(response => {
+          this.treeDataList = tree(response.allData,0,'parent_id')
+          console.log(this.treeDataList,'tree')
+          this.defaultCheckedKeys = response.userData
+          console.log(this.defaultCheckedKeys,'tree')
+        })
+
+        // this.temp = Object.assign({}, row) // copy obj
+        // this.temp.timestamp = new Date(this.temp.timestamp)
         this.dialogStatus = 'update'
         this.dialogResourceVisible = true
 
-        this.roleResource.roleId=row.id
+        this.roleResource.role_id=row.id
 
-        this.$nextTick(() => {
-          this.$refs.tree.setCheckedKeys([])
-
-        });
-        console.log(this.defaultCheckedKeys)
-        getRoleresources(row.id).then(response => {
-
-          this.defaultCheckedKeys = response.data
-          console.log(this.defaultCheckedKeys)
-
-        })
+        // this.$nextTick(() => {
+        //   this.$refs.tree.setCheckedKeys([])
+        //
+        // });
+        // console.log(this.defaultCheckedKeys)
+        // getRoleresources(row.id).then(response => {
+        //
+        //   this.defaultCheckedKeys = response.data
+        //   console.log(this.defaultCheckedKeys)
+        //
+        // })
       },
       updateResourceData() {
         console.log(this.$refs.tree.getCheckedKeys())
-        this.roleResource.resourcesIds=this.$refs.tree.getCheckedKeys()
+        this.roleResource.menu_ids=this.$refs.tree.getCheckedKeys()
 
         console.log(this.roleResource)
-        updateRoleResource(this.roleResource).then(() => {
+        updateRoleMenu(this.roleResource).then(() => {
               this.dialogResourceVisible = false
               this.$notify({
                 title: '成功',
