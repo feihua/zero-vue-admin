@@ -1,6 +1,10 @@
 import request from '@/utils/request'
 
-// 根据用户名和密码登录
+/**
+ * 根据用户名和密码登录
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function login(data) {
   return request({
     url: '/api/sys/user/login',
@@ -9,7 +13,10 @@ export function login(data) {
   })
 }
 
-// 根据token获取用户信息
+/**
+ * 根据token获取用户信息
+ * @returns {AxiosPromise}
+ */
 export function getInfo() {
   return request({
     url: '/api/sys/user/currentUser',
@@ -17,7 +24,10 @@ export function getInfo() {
   })
 }
 
-// 退出登录
+/**
+ * 退出登录
+ * @returns {AxiosPromise}
+ */
 export function logout() {
   return request({
     url: '/user/logout',
@@ -25,8 +35,12 @@ export function logout() {
   })
 }
 
-// 获取用户信息列表
-export function fetchList(query) {
+/**
+ * 获取用户信息列表
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function queryUserList(query) {
   return request({
     url: '/api/sys/user/list',
     method: 'post',
@@ -34,15 +48,11 @@ export function fetchList(query) {
   })
 }
 
-// 根据用户id获取用户信息
-export function fetchUser(id) {
-  return request({
-    url: '/user/find/detail' + id,
-    method: 'get'
-  })
-}
-
-// 添加用户信息
+/**
+ * 添加用户信息
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function createUser(data) {
   return request({
     url: '/api/sys/user/add',
@@ -51,7 +61,11 @@ export function createUser(data) {
   })
 }
 
-// 更新用户信息
+/**
+ * 更新用户信息
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateUser(data) {
   return request({
     url: '/api/sys/user/update',
@@ -60,7 +74,11 @@ export function updateUser(data) {
   })
 }
 
-// 更新用户信息
+/**
+ * 更新用户信息
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateUserRole(data) {
   return request({
     url: '/userRole/updateUserRole',
@@ -69,10 +87,15 @@ export function updateUserRole(data) {
   })
 }
 
-export function deleteUser(id) {
+/**
+ * 根据用户Id删除用户
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteUser(data) {
   return request({
     url: '/user/delete/',
     method: 'post',
-    data:id
+    data
   })
 }

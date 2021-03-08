@@ -3,10 +3,10 @@
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="权限名称" style="width: 200px;" class="filter-item" @keyup.enter.native="" />
       <el-input v-model="listQuery.createBy" placeholder="路径" style="width: 200px;" class="filter-item" @keyup.enter.native="" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreateWithOutPid">
+      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreateWithOutPid">
         添加
       </el-button>
     </div>
@@ -89,14 +89,14 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleCreate(row)">
+          <el-button v-waves type="primary" size="mini" @click="handleCreate(row)">
             添加
           </el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button v-waves type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
 
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -128,10 +128,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button v-waves @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button v-waves type="primary" @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -141,14 +141,15 @@
 </template>
 
 <script>
-  import { fetchList, createResources, deleteResources, updateResources } from '@/api/system/resource/resources'
-  import { parseTime } from '@/utils'
+  import { queryMenuList, createResources, deleteResources, updateResources } from '@/api/system/resource/resources'
   import {tree} from "@/utils/utils";
+  import waves from '@/directive/waves'
 
   export default {
+    directives: { waves },
     methods: {
       getList() {
-        fetchList(this.listQuery).then(response => {
+        queryMenuList(this.listQuery).then(response => {
           this.tableData = tree(response.data,0,'parent_id')
         })
       },
@@ -178,14 +179,12 @@
             this.temp.order_num=Number(this.temp.order_num)
             this.temp.type=Number(this.temp.type)
             createResources(this.temp).then(() => {
-              // this.list.unshift(this.temp)
               this.dialogFormVisible = false
               this.getList()
               this.$notify({
                 title: '成功',
                 message: '创建成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }
@@ -204,7 +203,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+            tempData.timestamp = +new Date(tempData.timestamp)
             updateResources(tempData).then(() => {
               this.getList()
               this.dialogFormVisible = false
@@ -212,7 +211,6 @@
                 title: '成功',
                 message: '更新成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }
@@ -267,11 +265,6 @@
       this.getList()
     },
 
-    filters: {
-      TIME: function(val) {
-        return parseTime(val)
-      }
-    },
     data() {
       return {
         tableData: [],

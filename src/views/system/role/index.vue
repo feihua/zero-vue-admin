@@ -13,10 +13,10 @@
 <!--      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">-->
 <!--        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />-->
 <!--      </el-select>-->
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
 <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
@@ -75,20 +75,15 @@
           {{ scope.row.last_update_time }}
         </template>
       </el-table-column>
-<!--      <el-table-column label="更新时间" align="center">-->
-<!--        <template slot-scope="scope">-->
-<!--          <span>{{ scope.row.updateT | TIME}}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button v-waves type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" @click="handleResourceUpdate(row)">
+          <el-button v-waves type="primary" size="mini" @click="handleResourceUpdate(row)">
             分权限
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -114,7 +109,7 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" v-waves @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -136,16 +131,15 @@
          <el-button @click="dialogResourceVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="updateResourceData">确认分配权限</el-button>
+        <el-button v-waves type="primary" @click="updateResourceData">确认分配权限</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { fetchList, fetchPv, createRole, updateRole,deleteRole ,updateRoleResource,getRoleresources} from '@/api/system/role/role'
-  // import waves from '@/directive/waves' // waves directive
-  import { parseTime } from '@/utils'
+  import { queryRoleList, createRole, updateRole,deleteRole } from '@/api/system/role/role'
+  import waves from '@/directive/waves'
   import Pagination from '@/components/Pagination'
   import { fetchList as treeList,updateRoleMenu } from '@/api/system/role/roleresources'
   import {tree} from "@/utils/utils";
@@ -166,7 +160,7 @@
   export default {
     name: 'ComplexTable',
     components: { Pagination },
-    // directives: { waves },
+    directives: { waves },
     filters: {
       statusFilter(status) {
         const statusMap = {
@@ -179,9 +173,6 @@
       typeFilter(type) {
         return calendarTypeKeyValue[type]
       },
-      TIME: function(val) {
-        return parseTime(val)
-      }
     },
     data() {
       return {
@@ -249,14 +240,10 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        queryRoleList(this.listQuery).then(response => {
           this.list = response.data
           this.total = response.total
           this.listLoading = false
-          // Just to simulate the time of the request
-          // setTimeout(() => {
-          //   this.listLoading = false
-          // }, 1.5 * 1000)
         })
       },
       handleFilter() {
@@ -307,7 +294,6 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
             this.temp.status = Number(this.temp.status)
             createRole(this.temp).then(() => {
               // this.list.unshift(this.temp)
@@ -317,14 +303,13 @@
                 title: '成功',
                 message: '创建成功',
                 type: 'success',
-                // duration: 2000
               })
             })
           }
         })
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
+        this.temp = Object.assign({}, row)
         this.temp.status = row.status+''
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -350,7 +335,6 @@
                 title: '成功',
                 message: '更新成功',
                 type: 'success',
-                // duration: 2000
               })
             })
           }
@@ -362,7 +346,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteRole(row.id).then(response => {
+          deleteRole({id:row.id}).then(response => {
             this.getList()
             this.$message({
               type: 'success',
@@ -376,35 +360,7 @@
           });
         });
       },
-      handleFetchPv(pv) {
-        fetchPv(pv).then(response => {
-          this.pvData = response.data.pvData
-          this.dialogPvVisible = true
-        })
-      },
-      // handleDownload() {
-      //   this.downloadLoading = true
-      //   import('@/vendor/Export2Excel').then(excel => {
-      //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      //     const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-      //     const data = this.formatJson(filterVal, this.list)
-      //     excel.export_json_to_excel({
-      //       header: tHeader,
-      //       data,
-      //       filename: 'table-list'
-      //     })
-      //     this.downloadLoading = false
-      //   })
-      // },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        }))
-      },
+
       handleResourceUpdate(row) {
         treeList(row.id).then(response => {
           this.treeDataList = tree(response.allData,0,'parent_id')
@@ -413,24 +369,9 @@
           console.log(this.defaultCheckedKeys,'tree')
         })
 
-        // this.temp = Object.assign({}, row) // copy obj
-        // this.temp.timestamp = new Date(this.temp.timestamp)
         this.dialogStatus = 'update'
         this.dialogResourceVisible = true
-
         this.roleResource.role_id=row.id
-
-        // this.$nextTick(() => {
-        //   this.$refs.tree.setCheckedKeys([])
-        //
-        // });
-        // console.log(this.defaultCheckedKeys)
-        // getRoleresources(row.id).then(response => {
-        //
-        //   this.defaultCheckedKeys = response.data
-        //   console.log(this.defaultCheckedKeys)
-        //
-        // })
       },
       updateResourceData() {
         console.log(this.$refs.tree.getCheckedKeys())
@@ -443,7 +384,6 @@
                 title: '成功',
                 message: '更新成功',
                 type: 'success',
-                // duration: 2000
               })
             })
           }

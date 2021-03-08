@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ * 查询系统日志
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function querySysLogList(query) {
   return request({
     url: '/api/sys/sysLog/list',
     method: 'post',
@@ -8,10 +13,15 @@ export function fetchList(query) {
   })
 }
 
-export function deleteSysLogin(id) {
+/**
+ * 删除系统日志
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteSysLogin(data) {
   return request({
     url: '/api/sys/sysLog/delete',
     method: 'post',
-    data: id
+    data
   })
 }

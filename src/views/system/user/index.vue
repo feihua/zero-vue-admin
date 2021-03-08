@@ -4,10 +4,10 @@
       <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.nick_name" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -76,13 +76,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini"  @click="handleUpdate(row)">
+          <el-button v-waves type="primary" size="mini"  @click="handleUpdate(row)">
             编辑
           </el-button>
-<!--          <el-button type="primary" size="mini"  @click="handleRoleUpdate(row)">-->
-<!--            分配角色-->
-<!--          </el-button>-->
-          <el-button size="mini" type="danger"  @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger"  @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -124,10 +121,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button v-waves @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button v-waves type="primary" @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -144,22 +141,21 @@
         </el-option>
       </el-select>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogRoleVisible = false">
+        <el-button v-waves @click="dialogRoleVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="updateRoleData()">确认分配角色</el-button>
+        <el-button v-waves type="primary" @click="updateRoleData()">确认分配角色</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { createUser, deleteUser, fetchList, fetchPv, updateUser,updateUserRole } from '@/api/system/user/user'
-  import { fetchList as roleList } from '@/api/system/role/role'
+  import { createUser, deleteUser, queryUserList, updateUser,updateUserRole } from '@/api/system/user/user'
+  import { queryRoleList } from '@/api/system/role/role'
 
-  // import waves from '@/directive/waves' // waves directive
-  import { parseTime } from '@/utils/'
-  import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+  import waves from '@/directive/waves'
+  import Pagination from '@/components/Pagination'
 
   const calendarTypeOptions = [
     { key: 'CN', display_name: 'China' },
@@ -177,7 +173,7 @@
   export default {
     name: 'ComplexTable',
     components: { Pagination },
-    // directives: { waves },
+    directives: { waves },
     filters: {
       statusFilter(status) {
         const statusMap = {
@@ -190,9 +186,6 @@
       typeFilter(type) {
         return calendarTypeKeyValue[type]
       },
-      TIME: function(val) {
-        return parseTime(val)
-      }
     },
     data() {
       return {
@@ -259,7 +252,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        queryUserList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data
           this.total = response.total
@@ -313,25 +306,21 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.temp.author = 'vue-element-admin'
             this.temp.role_id = this.temp.roleId+''
             createUser(this.temp).then(() => {
-              // this.list.unshift(this.temp)
               this.getList()
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
                 message: '创建成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }
         })
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
+        this.temp = Object.assign({}, row)
         this.temp.status = row.status+''
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -357,7 +346,6 @@
                 title: '成功',
                 message: '更新成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }
@@ -383,26 +371,7 @@
           })
         })
       },
-      handleFetchPv(pv) {
-        fetchPv(pv).then(response => {
-          this.pvData = response.data.pvData
-          this.dialogPvVisible = true
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        }))
-      },
-      handleRoleUpdate(row) {
 
-        this.dialogRoleVisible = true
-       this.userRole.userId=row.id
-      },
       updateRoleData() {
         console.log(this.userRole)
         updateUserRole(this.userRole).then(() => {
@@ -411,18 +380,12 @@
             title: '成功',
             message: '更新成功',
             type: 'success'
-            // duration: 2000
           })
         })
       },
       getRoleList() {
-
-        roleList(this.listQuery).then(response => {
-          // this.list = response.data.list
-          // this.total = response.data.total
+        queryRoleList(this.listQuery).then(response => {
           this.options=response.data
-
-
         })
       },
     }

@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
     </div>
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -59,29 +59,15 @@
 </template>
 
 <script>
-  import { deleteUser, fetchList} from '@/api/log/loginlog'
+  import { deleteLoginlog, queryLoginLogList} from '@/api/log/loginlog'
+  import waves from '@/directive/waves'
   import Pagination from '@/components/Pagination'
 
   export default {
     name: 'ComplexTable',
     components: { Pagination },
-    // directives: { waves },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'info',
-          deleted: 'danger'
-        }
-        return statusMap[status]
-      },
-      typeFilter(type) {
-        return calendarTypeKeyValue[type]
-      },
-      TIME: function(val) {
-        return parseTime(val)
-      }
-    },
+    directives: { waves },
+
     data() {
       return {
         tableKey: 0,
@@ -97,12 +83,12 @@
       }
     },
     created() {
-      this.getList()
+      this.queryList()
     },
     methods: {
-      getList() {
+      queryList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        queryLoginLogList(this.listQuery).then(response => {
           this.list = response.data
           this.total = response.total
           this.listLoading = false
@@ -119,7 +105,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser({id:row.id}).then(response => {
+          deleteLoginlog({id:row.id}).then(response => {
             this.getList()
             this.$message({
               type: 'success',

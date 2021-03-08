@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ * 查询角色
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function queryRoleList(query) {
   return request({
     url: '/api/sys/role/list',
     method: 'post',
@@ -8,22 +13,24 @@ export function fetchList(query) {
   })
 }
 
-export function deleteRole(id) {
+/**
+ * 删除角色
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteRole(data) {
   return request({
-    url: '/api/sys/role/delete' + id,
+    url: '/api/sys/role/delete',
     method: 'post',
-    data:id
+    data
   })
 }
 
-export function fetchPv(pv) {
-  return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
+/**
+ * 新增角色
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function createRole(data) {
   return request({
     url: '/api/sys/role/add',
@@ -32,6 +39,11 @@ export function createRole(data) {
   })
 }
 
+/**
+ * 更新角色
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateRole(data) {
   return request({
     url: '/api/sys/role/update',
@@ -40,17 +52,3 @@ export function updateRole(data) {
   })
 }
 
-export function updateRoleResource(data) {
-  return request({
-    url: '/roleResources/updateRoleResource',
-    method: 'post',
-    data
-  })
-}
-
-export function getRoleresources(id) {
-  return request({
-    url: '/roleResources/find/' + id,
-    method: 'get'
-  })
-}

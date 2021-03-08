@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ * 查询机构
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function querDeptList(query) {
   return request({
     url: '/api/sys/dept/list',
     method: 'post',
@@ -8,6 +13,11 @@ export function fetchList(query) {
   })
 }
 
+/**
+ * 删除机构
+ * @param id
+ * @returns {AxiosPromise}
+ */
 export function deleteDept(id) {
   return request({
     url: '/api/sys/dept/delete',
@@ -16,6 +26,11 @@ export function deleteDept(id) {
   })
 }
 
+/**
+ * 创建机构
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function createDept(data) {
   return request({
     url: '/api/sys/dept/add',
@@ -24,6 +39,11 @@ export function createDept(data) {
   })
 }
 
+/**
+ * 更新机构
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateDept(data) {
   return request({
     url: '/api/sys/dept/update',

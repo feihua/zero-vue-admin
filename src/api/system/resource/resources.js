@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ * 查询菜单列表
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function queryMenuList(query) {
   return request({
     url: '/api/sys/menu/list',
     method: 'post',
@@ -8,6 +13,11 @@ export function fetchList(query) {
   })
 }
 
+/**
+ * 删除菜单
+ * @param id
+ * @returns {AxiosPromise}
+ */
 export function deleteResources(id) {
   return request({
     url: '/api/sys/menu/delete/',
@@ -16,6 +26,11 @@ export function deleteResources(id) {
   })
 }
 
+/**
+ * 创建菜单
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function createResources(data) {
   return request({
     url: '/api/sys/menu/add',
@@ -24,6 +39,11 @@ export function createResources(data) {
   })
 }
 
+/**
+ * 更新菜单
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateResources(data) {
   return request({
     url: '/api/sys/menu/update',

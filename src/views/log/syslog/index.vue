@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="用户名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
     </div>
@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -64,29 +64,15 @@
 </template>
 
 <script>
-  import { deleteSysLogin, fetchList} from '@/api/log/syslog'
-
+  import { deleteSysLogin, querySysLogList} from '@/api/log/syslog'
+  import waves from '@/directive/waves'
   import Pagination from '@/components/Pagination'
 
   export default {
     name: 'ComplexTable',
     components: { Pagination },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'info',
-          deleted: 'danger'
-        }
-        return statusMap[status]
-      },
-      typeFilter(type) {
-        return calendarTypeKeyValue[type]
-      },
-      TIME: function(val) {
-        return parseTime(val)
-      }
-    },
+    directives: { waves },
+
     data() {
       return {
         tableKey: 0,
@@ -97,44 +83,6 @@
           current: 1,
           pageSize: 10,
           name: '',
-          phone: '',
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
-        },
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        statusOptions: ['published', 'draft', 'deleted'],
-        showReviewer: false,
-        temp: {
-          id: undefined,
-          importance: 1,
-          remarks: '',
-          timestamp: new Date(),
-          title: '',
-          type: '',
-          status: 'published'
-        },
-        dialogFormVisible: false,
-        dialogStatus: '',
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        dialogPvVisible: false,
-        dialogRoleVisible: false,
-        pvData: [],
-        rules: {
-          type: [{ required: true, message: 'type is required', trigger: 'change' }],
-          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-        },
-        downloadLoading: false,
-        options: [],
-        value: '',
-        userRole: {
-          userId: '',
-          roleId: ''
         },
       }
     },
@@ -144,8 +92,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
-          console.log(response.data)
+        querySysLogList(this.listQuery).then(response => {
           this.list = response.data
           this.total = response.total
           this.listLoading = false

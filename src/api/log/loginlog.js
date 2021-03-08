@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ * 查询登录日志
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function queryLoginLogList(query) {
   return request({
     url: '/api/sys/loginLog/list',
     method: 'post',
@@ -8,10 +13,15 @@ export function fetchList(query) {
   })
 }
 
-export function deleteUser(id) {
+/**
+ * 删除登录日志
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteLoginlog(data) {
   return request({
     url: '/api/sys/loginLog/delete',
     method: 'post',
-    data: id
+    data
   })
 }

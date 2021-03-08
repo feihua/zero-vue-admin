@@ -3,10 +3,10 @@
     <div class="filter-container">
       <el-input v-model="listQuery.value" placeholder="数据值" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.type" placeholder="类型" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -80,10 +80,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini"  @click="handleUpdate(row)">
+          <el-button v-waves type="primary" size="mini"  @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button size="mini" type="danger"  @click="handleDelete(row)">
+          <el-button v-waves size="mini" type="danger"  @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -117,10 +117,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button v-waves @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button v-waves type="primary" @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -130,30 +130,14 @@
 </template>
 
 <script>
-  import { createDict, deleteDict, fetchList, updateDict } from '@/api/system/dict/dict'
-
+  import { createDict, deleteDict, queryDictList, updateDict } from '@/api/system/dict/dict'
+  import waves from '@/directive/waves'
   import Pagination from '@/components/Pagination'
 
   export default {
     name: 'ComplexTable',
     components: { Pagination },
-    // directives: { waves },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'info',
-          deleted: 'danger'
-        }
-        return statusMap[status]
-      },
-      typeFilter(type) {
-        return calendarTypeKeyValue[type]
-      },
-      TIME: function(val) {
-        return parseTime(val)
-      }
-    },
+    directives: { waves },
     data() {
       return {
         tableKey: 0,
@@ -165,12 +149,7 @@
           pageSize: 10,
           value: '',
           type: '',
-          importance: undefined,
-          title: undefined,
-          sort: '+id'
         },
-        importanceOptions: [1, 2, 3],
-        showReviewer: false,
         temp: {
           id: undefined,
           del_flag: 0,
@@ -189,7 +168,6 @@
         },
         dialogPvVisible: false,
         dialogRoleVisible: false,
-        pvData: [],
         rules: {
           type: [{ required: true, message: 'type is required', trigger: 'change' }],
           timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
@@ -198,10 +176,6 @@
         downloadLoading: false,
         options: [],
         value: '',
-        userRole: {
-          userId: '',
-          roleId: ''
-        },
       }
     },
     created() {
@@ -210,7 +184,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        queryDictList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data
           this.total = response.total
@@ -251,23 +225,20 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
             createDict(this.temp).then(() => {
-              // this.list.unshift(this.temp)
               this.getList()
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
                 message: '创建成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }
         })
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
+        this.temp = Object.assign({}, row)
         this.temp.timestamp = new Date(this.temp.timestamp)
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -279,7 +250,6 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
             updateDict(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
@@ -293,7 +263,6 @@
                 title: '成功',
                 message: '更新成功',
                 type: 'success'
-                // duration: 2000
               })
             })
           }

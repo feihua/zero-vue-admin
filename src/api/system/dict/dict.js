@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+/**
+ *查询字典列表
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function queryDictList(query) {
   return request({
     url: '/api/sys/dict/list',
     method: 'post',
@@ -8,15 +13,24 @@ export function fetchList(query) {
   })
 }
 
-export function deleteDict(id) {
+/**
+ *根据主键删除字典
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteDict(data) {
   return request({
     url: '/api/sys/dict/delete',
     method: 'post',
-    data: id
+    data
   })
 }
 
-
+/**
+ *创建字典
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function createDict(data) {
   return request({
     url: '/api/sys/dict/add',
@@ -25,6 +39,11 @@ export function createDict(data) {
   })
 }
 
+/**
+ * 更新字典
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateDict(data) {
   return request({
     url: '/api/sys/dict/update',

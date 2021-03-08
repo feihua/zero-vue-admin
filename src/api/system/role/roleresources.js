@@ -1,5 +1,10 @@
 import request from '@/utils/request'
 
+/**
+ * 根据角色id查询所以角色和它拥有的角色
+ * @param id
+ * @returns {AxiosPromise}
+ */
 export function fetchList(id) {
   return request({
     url: '/api/sys/role/queryMenuByRoleId',
@@ -8,6 +13,11 @@ export function fetchList(id) {
   })
 }
 
+/**
+ * 更新角色菜单
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function updateRoleMenu(data) {
   return request({
     url: '/api/sys/role/updateRoleMenu',
