@@ -44,7 +44,7 @@ router.beforeEach(async(to, from, next) => {
 
           const menus = filterAsyncRouter(store.getters.menus) // 1.过滤路由
 
-          console.log(menus)
+          console.log(menus,221133)
 
           router.addRoutes(menus) // 2.动态添加路由
           console.log(router,1132232)
@@ -93,16 +93,16 @@ function filterAsyncRouter(asyncRouterMap) {
       router.component = _import(component)
       }
     }
-    console.log(router,333333)
-    if (router.hidden) {
-      // eslint-disable-next-line eqeqeq
-      if (router.hidden == '1') {
-        router.hidden = false
-        // eslint-disable-next-line eqeqeq
-      } else if (router.hidden == '0') {
-        router.hidden = true
-      }
-    }
+    router.hidden = false
+    // if (router.hidden) {
+    //   // eslint-disable-next-line eqeqeq
+    //   if (router.hidden === '1') {
+    //     router.hidden = false
+    //     // eslint-disable-next-line eqeqeq
+    //   } else if (router.hidden === '0') {
+    //     router.hidden = true
+    //   }
+    // }
     if (router.children && router.children.length) {
       router.children = filterAsyncRouter(router.children)
     }

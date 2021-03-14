@@ -1,0 +1,393 @@
+<template>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.nick_name" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        查询
+      </el-button>
+      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        添加
+      </el-button>
+    </div>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      fit
+      highlight-current-row
+    >
+      <el-table-column align="center" label="ID">
+        <template slot-scope="scope">
+          {{ scope.row.id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户名">
+        <template slot-scope="scope">
+          {{ scope.row.name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="呢称" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.nick_name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="手机号码">
+        <template slot-scope="scope">
+          {{ scope.row.mobile }}
+        </template>
+      </el-table-column>
+      <el-table-column label="邮箱">
+        <template slot-scope="scope">
+          {{ scope.row.email }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          {{ scope.row.status }}
+        </template>
+      </el-table-column>
+      <el-table-column label="部门">
+        <template slot-scope="scope">
+          {{ scope.row.dept_id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建人">
+        <template slot-scope="scope">
+          {{ scope.row.create_by }}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.create_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="更新人">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_by }}
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间">
+        <template slot-scope="scope">
+          {{ scope.row.last_update_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button v-waves type="primary" size="mini"  @click="handleUpdate(row)">
+            编辑
+          </el-button>
+          <el-button v-waves size="mini" type="danger"  @click="handleDelete(row)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.pageSize" @pagination="getList"/>
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="用名字" prop="name">
+          <el-input v-model="temp.name"/>
+        </el-form-item>
+        <el-form-item label="呢称" prop="nick_name">
+          <el-input v-model="temp.nick_name"/>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile">
+          <el-input v-model="temp.mobile"/>
+        </el-form-item>
+        <el-form-item label="邮件" prop="email">
+          <el-input v-model="temp.email"/>
+        </el-form-item>
+        <el-form-item label="部门" prop="dept_id">
+          <el-input v-model="temp.dept_id"/>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+        <el-radio v-model="temp.status" label="1">正常</el-radio>
+        <el-radio v-model="temp.status" label="0">禁用</el-radio>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleId">
+        <el-select v-model="temp.roleId" placeholder="请选择角色">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.remark"
+            :value="item.id">
+          </el-option>
+        </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button v-waves @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button v-waves type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          确认
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogRoleVisible" title="分配角色" width="20%">
+      <el-select v-model="userRole.roleId" placeholder="请选择角色">
+        <el-option
+          v-for="item in options"
+          :key="item.id"
+          :label="item.nick_name"
+          :value="item.id"
+          :disabled="item.disabled">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button v-waves @click="dialogRoleVisible = false">
+          取消
+        </el-button>
+        <el-button v-waves type="primary" @click="updateRoleData()">确认分配角色</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+  import { createUser, deleteUser, queryUserList, updateUser,updateUserRole } from '@/api/system/user/user'
+  import { queryRoleList } from '@/api/system/role/role'
+
+  import waves from '@/directive/waves'
+  import Pagination from '@/components/Pagination'
+
+  const calendarTypeOptions = [
+    { key: 'CN', display_name: 'China' },
+    { key: 'US', display_name: 'USA' },
+    { key: 'JP', display_name: 'Japan' },
+    { key: 'EU', display_name: 'Eurozone' }
+  ]
+
+  // arr to obj, such as { CN : "China", US : "USA" }
+  const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+    acc[cur.key] = cur.display_name
+    return acc
+  }, {})
+
+  export default {
+    name: 'ComplexTable',
+    components: { Pagination },
+    directives: { waves },
+    filters: {
+      statusFilter(status) {
+        const statusMap = {
+          published: 'success',
+          draft: 'info',
+          deleted: 'danger'
+        }
+        return statusMap[status]
+      },
+      typeFilter(type) {
+        return calendarTypeKeyValue[type]
+      },
+    },
+    data() {
+      return {
+        tableKey: 0,
+        list: null,
+        total: 0,
+        listLoading: true,
+        listQuery: {
+          current: 1,
+          pageSize: 10,
+          name: '',
+          phone: '',
+          nick_name: '',
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          sort: '+id'
+        },
+        importanceOptions: [1, 2, 3],
+        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+        statusOptions: ['published', 'draft', 'deleted'],
+        showReviewer: false,
+        temp: {
+          id: undefined,
+          importance: 1,
+          remarks: '',
+          title: '',
+          email: '',
+          type: '',
+          mobile: '',
+          nick_name: '',
+          status: '',
+          roleId: '',
+          role_id: '',
+          dept_id: undefined,
+        },
+        dialogFormVisible: false,
+        dialogStatus: '',
+        textMap: {
+          update: 'Edit',
+          create: 'Create'
+        },
+        dialogPvVisible: false,
+        dialogRoleVisible: false,
+        pvData: [],
+        rules: {
+          type: [{ required: true, message: 'type is required', trigger: 'change' }],
+          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        },
+        downloadLoading: false,
+        options: [],
+        value: '',
+        userRole: {
+          userId: '',
+          roleId: ''
+        },
+      }
+    },
+    created() {
+      this.getList()
+      this.getRoleList()
+    },
+    methods: {
+      getList() {
+        this.listLoading = true
+        queryUserList(this.listQuery).then(response => {
+          console.log(response.data)
+          this.list = response.data
+          this.total = response.total
+          this.listLoading = false
+        })
+      },
+      handleFilter() {
+        this.listQuery.current = 1
+        this.getList()
+      },
+      handleModifyStatus(row, status) {
+        this.$message({
+          message: '操作成功',
+          type: 'success'
+        })
+        row.status = status
+      },
+      sortChange(data) {
+        const { prop, order } = data
+        if (prop === 'id') {
+          this.sortByID(order)
+        }
+      },
+      sortByID(order) {
+        if (order === 'ascending') {
+          this.listQuery.sort = '+id'
+        } else {
+          this.listQuery.sort = '-id'
+        }
+        this.handleFilter()
+      },
+      resetTemp() {
+        this.temp = {
+          id: undefined,
+          name: '',
+          age: '',
+          phone: '',
+          email: '',
+          createTime: new Date(),
+          remarks: ''
+        }
+      },
+      handleCreate() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      createData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            this.temp.role_id = this.temp.roleId+''
+            createUser(this.temp).then(() => {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success'
+              })
+            })
+          }
+        })
+      },
+      handleUpdate(row) {
+        this.temp = Object.assign({}, row)
+        this.temp.status = row.status+''
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      updateData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            const tempData = Object.assign({}, this.temp)
+            tempData.role_id = this.temp.roleId+''
+            updateUser(tempData).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
+              }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success'
+              })
+            })
+          }
+        })
+      },
+      handleDelete(row) {
+        this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          deleteUser(row.id).then(response => {
+            this.getList()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      },
+
+      updateRoleData() {
+        console.log(this.userRole)
+        updateUserRole(this.userRole).then(() => {
+          this.dialogRoleVisible = false
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success'
+          })
+        })
+      },
+      getRoleList() {
+        queryRoleList(this.listQuery).then(response => {
+          this.options=response.data
+        })
+      },
+    }
+  }
+</script>
