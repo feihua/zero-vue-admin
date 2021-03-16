@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  * 查询系统日志
  * @param query
- * @returns {AxiosPromise}
  */
 export function querySysLogList(query) {
   return request({
@@ -16,7 +15,6 @@ export function querySysLogList(query) {
 /**
  * 删除系统日志
  * @param id
- * @returns {AxiosPromise}
  */
 export function deleteSysLogin(data) {
   return request({

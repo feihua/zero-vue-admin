@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  * 查询登录日志
  * @param query
- * @returns {AxiosPromise}
  */
 export function queryLoginLogList(query) {
   return request({
@@ -16,7 +15,6 @@ export function queryLoginLogList(query) {
 /**
  * 删除登录日志
  * @param id
- * @returns {AxiosPromise}
  */
 export function deleteLoginlog(data) {
   return request({

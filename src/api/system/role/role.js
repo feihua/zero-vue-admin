@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  * 查询角色
  * @param query
- * @returns {AxiosPromise}
  */
 export function queryRoleList(query) {
   return request({
@@ -16,7 +15,6 @@ export function queryRoleList(query) {
 /**
  * 删除角色
  * @param id
- * @returns {AxiosPromise}
  */
 export function deleteRole(data) {
   return request({
@@ -29,7 +27,6 @@ export function deleteRole(data) {
 /**
  * 新增角色
  * @param data
- * @returns {AxiosPromise}
  */
 export function createRole(data) {
   return request({
@@ -42,7 +39,6 @@ export function createRole(data) {
 /**
  * 更新角色
  * @param data
- * @returns {AxiosPromise}
  */
 export function updateRole(data) {
   return request({

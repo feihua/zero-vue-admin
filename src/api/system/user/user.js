@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  * 根据用户名和密码登录
  * @param data
- * @returns {AxiosPromise}
  */
 export function login(data) {
   return request({
@@ -15,7 +14,6 @@ export function login(data) {
 
 /**
  * 根据token获取用户信息
- * @returns {AxiosPromise}
  */
 export function getInfo() {
   return request({
@@ -26,7 +24,6 @@ export function getInfo() {
 
 /**
  * 退出登录
- * @returns {AxiosPromise}
  */
 export function logout() {
   return request({
@@ -38,7 +35,6 @@ export function logout() {
 /**
  * 获取用户信息列表
  * @param query
- * @returns {AxiosPromise}
  */
 export function queryUserList(query) {
   return request({
@@ -51,7 +47,6 @@ export function queryUserList(query) {
 /**
  * 添加用户信息
  * @param data
- * @returns {AxiosPromise}
  */
 export function createUser(data) {
   return request({
@@ -64,7 +59,6 @@ export function createUser(data) {
 /**
  * 更新用户信息
  * @param data
- * @returns {AxiosPromise}
  */
 export function updateUser(data) {
   return request({
@@ -77,7 +71,6 @@ export function updateUser(data) {
 /**
  * 更新用户信息
  * @param data
- * @returns {AxiosPromise}
  */
 export function updateUserRole(data) {
   return request({
@@ -90,7 +83,6 @@ export function updateUserRole(data) {
 /**
  * 根据用户Id删除用户
  * @param id
- * @returns {AxiosPromise}
  */
 export function deleteUser(data) {
   return request({

@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  * 查询所有角色
  * @param query
- * @returns {AxiosPromise}
  */
 export function fetchList(query) {
   return request({

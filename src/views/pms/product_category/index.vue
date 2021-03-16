@@ -130,28 +130,12 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogRoleVisible" title="分配角色" width="20%">
-      <el-select v-model="userRole.roleId" placeholder="请选择角色">
-        <el-option
-          v-for="item in options"
-          :key="item.id"
-          :label="item.nick_name"
-          :value="item.id"
-          :disabled="item.disabled">
-        </el-option>
-      </el-select>
-      <span slot="footer" class="dialog-footer">
-        <el-button v-waves @click="dialogRoleVisible = false">
-          取消
-        </el-button>
-        <el-button v-waves type="primary" @click="updateRoleData()">确认分配角色</el-button>
-      </span>
-    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { createUser, deleteUser, queryUserList, updateUser,updateUserRole } from '@/api/system/user/user'
+  import { createProductCategory, deleteProductCategory, queryProductCategoryList, updateProductCategory } from '@/api/pms/product_category'
   import { queryRoleList } from '@/api/system/role/role'
 
   import waves from '@/directive/waves'
@@ -252,7 +236,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        queryUserList(this.listQuery).then(response => {
+        queryProductCategoryList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data
           this.total = response.total
@@ -307,7 +291,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.temp.role_id = this.temp.roleId+''
-            createUser(this.temp).then(() => {
+            createProductCategory(this.temp).then(() => {
               this.getList()
               this.dialogFormVisible = false
               this.$notify({
@@ -333,7 +317,7 @@
           if (valid) {
             const tempData = Object.assign({}, this.temp)
             tempData.role_id = this.temp.roleId+''
-            updateUser(tempData).then(() => {
+            updateProductCategory(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
@@ -357,7 +341,7 @@
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          deleteUser(row.id).then(response => {
+          deleteProductCategory(row.id).then(response => {
             this.getList()
             this.$message({
               type: 'success',
@@ -372,17 +356,6 @@
         })
       },
 
-      updateRoleData() {
-        console.log(this.userRole)
-        updateUserRole(this.userRole).then(() => {
-          this.dialogRoleVisible = false
-          this.$notify({
-            title: '成功',
-            message: '更新成功',
-            type: 'success'
-          })
-        })
-      },
       getRoleList() {
         queryRoleList(this.listQuery).then(response => {
           this.options=response.data

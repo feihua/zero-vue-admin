@@ -3,7 +3,6 @@ import request from '@/utils/request'
 /**
  *查询字典列表
  * @param query
- * @returns {AxiosPromise}
  */
 export function queryDictList(query) {
   return request({
@@ -16,7 +15,6 @@ export function queryDictList(query) {
 /**
  *根据主键删除字典
  * @param id
- * @returns {AxiosPromise}
  */
 export function deleteDict(data) {
   return request({
@@ -29,7 +27,6 @@ export function deleteDict(data) {
 /**
  *创建字典
  * @param data
- * @returns {AxiosPromise}
  */
 export function createDict(data) {
   return request({
@@ -42,7 +39,6 @@ export function createDict(data) {
 /**
  * 更新字典
  * @param data
- * @returns {AxiosPromise}
  */
 export function updateDict(data) {
   return request({
