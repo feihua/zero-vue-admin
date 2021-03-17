@@ -26,52 +26,62 @@
       </el-table-column>
       <el-table-column label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
       <el-table-column label="呢称" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.nickname }}</span>
         </template>
       </el-table-column>
       <el-table-column label="手机号码">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.phone }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
-        <template slot-scope="scope">
-          {{ scope.row.email }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="帐号启用状态">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column label="部门">
+      <el-table-column label="生日">
         <template slot-scope="scope">
-          {{ scope.row.dept_id }}
+          {{ scope.row.birthday }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人">
+      <el-table-column label="所做城市">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.city }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="职业">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.job }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人">
+      <el-table-column label="用户来源" align="center">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.source_type }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间">
+      <el-table-column label="积分">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.integration }}
+        </template>
+      </el-table-column>
+      <el-table-column label="成长值">
+        <template slot-scope="scope">
+          {{ scope.row.growth }}
+        </template>
+      </el-table-column>
+      <el-table-column label="剩余抽奖次数">
+        <template slot-scope="scope">
+          {{ scope.row.luckey_count }}
+        </template>
+      </el-table-column>
+      <el-table-column label="历史积分数量">
+        <template slot-scope="scope">
+          {{ scope.row.history_integration }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

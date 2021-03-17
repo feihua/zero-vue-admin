@@ -29,50 +29,54 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="成长值" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.growth_point }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="是否默认等级">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.default_status }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="免运费标准">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.free_freight_point }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="每次评价获取的成长值">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.comment_growth_point }}
         </template>
       </el-table-column>
-      <el-table-column label="部门">
+      <el-table-column label="免邮特权">
         <template slot-scope="scope">
-          {{ scope.row.dept_id }}
+          {{ scope.row.priviledge_free_freight }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人">
+      <el-table-column label="签到特权">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.priviledge_sign_in }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="评论获奖励特权" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.priviledge_comment }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人">
+      <el-table-column label="专享活动特权">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.priviledge_promotion }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间">
+      <el-table-column label="会员价格特权">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.priviledge_member_price }}
         </template>
+        <el-table-column label="生日特权">
+          <template slot-scope="scope">
+            {{ scope.row.priviledge_birthday }}
+          </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">

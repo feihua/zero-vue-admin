@@ -24,54 +24,49 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="订单id">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.order_id }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="手机号码">
-        <template slot-scope="scope">
-          {{ scope.row.mobile }}
-        </template>
-      </el-table-column>
-      <el-table-column label="邮箱">
-        <template slot-scope="scope">
-          {{ scope.row.email }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态">
-        <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column label="部门">
-        <template slot-scope="scope">
-          {{ scope.row.dept_id }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="申请时间" align="center">
         <template slot-scope="scope">
           {{ scope.row.create_time }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人">
+      <el-table-column label="会员用户名" >
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          <span>{{ scope.row.member_username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="更新时间">
+      <el-table-column label="退款金额">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.return_amount }}
+        </template>
+      </el-table-column>
+      <el-table-column label="退货人姓名">
+        <template slot-scope="scope">
+          {{ scope.row.return_name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="退货人电话">
+        <template slot-scope="scope">
+          {{ scope.row.return_phone }}
+        </template>
+      </el-table-column>
+      <el-table-column label="申请状态">
+        <template slot-scope="scope">
+          {{ scope.row.status }}
+        </template>
+      </el-table-column>
+      <el-table-column label="处理时间">
+        <template slot-scope="scope">
+          {{ scope.row.handle_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="原因" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.reason }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

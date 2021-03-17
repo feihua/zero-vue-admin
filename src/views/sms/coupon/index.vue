@@ -24,54 +24,59 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="优惠券类型">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="名称" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="使用平台">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.platform }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="数量">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.count }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="金额">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.amount }}
         </template>
       </el-table-column>
-      <el-table-column label="部门">
+      <el-table-column label="每人限领张数">
         <template slot-scope="scope">
-          {{ scope.row.dept_id }}
+          {{ scope.row.per_limit }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人">
+      <el-table-column label="使用门槛">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.min_point }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="使用类型" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.use_type }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人">
+      <el-table-column label="发行数量">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.publish_count }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间">
+      <el-table-column label="已使用数量">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.use_count }}
+        </template>
+      </el-table-column>
+      <el-table-column label="领取数量">
+        <template slot-scope="scope">
+          {{ scope.row.receive_count }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

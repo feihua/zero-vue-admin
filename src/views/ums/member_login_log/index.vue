@@ -24,54 +24,34 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="会员名">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.member_id }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="ip地址" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.ip }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="省份/直辖市">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.province }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="城市">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.city }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="登录类型">
         <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column label="部门">
-        <template slot-scope="scope">
-          {{ scope.row.dept_id }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.login_type }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           {{ scope.row.create_time }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新人">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

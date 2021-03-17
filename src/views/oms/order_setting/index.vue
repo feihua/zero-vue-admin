@@ -24,54 +24,29 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="秒杀订单超时关闭时间">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.flash_order_overtime }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="正常订单超时时间" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.normal_order_overtime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="发货后自动确认收货时间">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.confirm_overtime }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="自动完成交易时间">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.finish_overtime }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="订单完成后自动好评时间">
         <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column label="部门">
-        <template slot-scope="scope">
-          {{ scope.row.dept_id }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.create_time }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新人">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.comment_overtime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

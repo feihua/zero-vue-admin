@@ -24,54 +24,29 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="广告名称">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="轮播位置" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="图片">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.pic }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="链接地址">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.url }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="上下线状态">
         <template slot-scope="scope">
           {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column label="部门">
-        <template slot-scope="scope">
-          {{ scope.row.dept_id }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建人">
-        <template slot-scope="scope">
-          {{ scope.row.create_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.create_time }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新人">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间">
-        <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">

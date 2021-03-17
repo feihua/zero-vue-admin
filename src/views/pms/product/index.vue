@@ -24,54 +24,59 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="商品名称">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="呢称" >
+      <el-table-column label="促销价格" >
         <template slot-scope="scope">
-          <span>{{ scope.row.nick_name }}</span>
+          <span>{{ scope.row.promotion_price }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码">
+      <el-table-column label="市场价">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          {{ scope.row.original_price }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱">
+      <el-table-column label="库存">
         <template slot-scope="scope">
-          {{ scope.row.email }}
+          {{ scope.row.stock }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="单位">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.unit }}
         </template>
       </el-table-column>
-      <el-table-column label="部门">
+      <el-table-column label="上架状态">
         <template slot-scope="scope">
-          {{ scope.row.dept_id }}
+          {{ scope.row.publish_status }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人">
+      <el-table-column label="新品状态">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.new_status }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="推荐状态" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.recommand_status }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人">
+      <el-table-column label="销量">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.sale }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间">
+      <el-table-column label="品牌名称">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.brand_name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="商品分类名称">
+        <template slot-scope="scope">
+          {{ scope.row.product_category_name }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
