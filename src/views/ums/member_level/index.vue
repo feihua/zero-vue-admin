@@ -73,6 +73,7 @@
         <template slot-scope="scope">
           {{ scope.row.priviledge_member_price }}
         </template>
+      </el-table-column>
         <el-table-column label="生日特权">
           <template slot-scope="scope">
             {{ scope.row.priviledge_birthday }}
