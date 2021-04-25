@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="机构名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.create_by" placeholder="创建人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.createBy" placeholder="创建人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -32,32 +32,32 @@
       </el-table-column>
       <el-table-column label="父id" >
         <template slot-scope="scope">
-          <span>{{ scope.row.parent_id }}</span>
+          <span>{{ scope.row.parentId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序">
         <template slot-scope="scope">
-          {{ scope.row.order_num }}
+          {{ scope.row.orderNum }}
         </template>
       </el-table-column>
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column label="更新人">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.lastUpdateBy }}
         </template>
       </el-table-column>
       <el-table-column label="更新时间">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.lastUpdateTime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
@@ -82,8 +82,8 @@
         <el-form-item label="机构名称" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="排序" prop="order_num">
-          <el-input v-model="temp.order_num"/>
+        <el-form-item label="排序" prop="orderNum">
+          <el-input v-model="temp.orderNum"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -117,7 +117,7 @@
           current: 1,
           pageSize: 10,
           name: '',
-          create_by: '',
+          createBy: '',
         },
         temp: {
           id: undefined,
@@ -126,8 +126,8 @@
           type: '',
           status: 'published',
           name: '',
-          order_num: 0,
-          parent_id: 0,
+          orderNum: 0,
+          parentId: 0,
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -160,7 +160,7 @@
         this.listLoading = true
         querDeptList(this.listQuery).then(response => {
           console.log(response.data,66666)
-          this.list = tree(response.data,0,'parent_id')
+          this.list = tree(response.data,0,'parentId')
           this.listLoading = false
         })
       },
@@ -204,7 +204,7 @@
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
-        this.temp.parent_id=0
+        this.temp.parentId=0
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -213,7 +213,7 @@
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
-        this.temp.parent_id=Number(row.id)
+        this.temp.parentId=Number(row.id)
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -221,7 +221,7 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.temp.order_num=Number(this.temp.order_num)
+            this.temp.orderNum=Number(this.temp.orderNum)
             console.log(this.temp,321232)
             createDept(this.temp).then(() => {
               // this.list.unshift(this.temp)
@@ -249,7 +249,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            tempData.order_num=Number(this.temp.order_num)
+            tempData.orderNum=Number(this.temp.orderNum)
             tempData.timestamp = +new Date(tempData.timestamp)
             updateDept(tempData).then(() => {
               for (const v of this.list) {

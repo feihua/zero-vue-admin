@@ -29,22 +29,22 @@
       </el-table-column>
       <el-table-column label="父id" >
         <template slot-scope="scope">
-          <span>{{ scope.row.parent_id }}</span>
+          <span>{{ scope.row.parentId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="路径">
         <template slot-scope="scope">
-          {{ scope.row.vue_path }}
+          {{ scope.row.vuePath }}
         </template>
       </el-table-column>
       <el-table-column label="页面">
         <template slot-scope="scope">
-          {{ scope.row.vue_component }}
+          {{ scope.row.vueComponent }}
         </template>
       </el-table-column>
       <el-table-column label="重定向">
         <template slot-scope="scope">
-          {{ scope.row.vue_redirect }}
+          {{ scope.row.vueRedirect }}
         </template>
       </el-table-column>
       <el-table-column label="类型">
@@ -54,37 +54,37 @@
       </el-table-column>
       <el-table-column label="图标">
         <template slot-scope="scope">
-          {{ scope.row.vue_icon }}
+          {{ scope.row.vueIcon }}
         </template>
       </el-table-column>
       <el-table-column label="排序">
         <template slot-scope="scope">
-          {{ scope.row.order_num }}
+          {{ scope.row.orderNum }}
         </template>
       </el-table-column>
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column label="更新人">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.lastUpdateBy }}
         </template>
       </el-table-column>
       <el-table-column label="更新时间">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.lastUpdateTime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
@@ -108,23 +108,23 @@
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="路径" prop="vue_path">
-          <el-input v-model="temp.vue_path" />
+        <el-form-item label="路径" prop="vuePath">
+          <el-input v-model="temp.vuePath" />
         </el-form-item>
-        <el-form-item label="页面" prop="vue_component">
-          <el-input v-model="temp.vue_component" />
+        <el-form-item label="页面" prop="vueComponent">
+          <el-input v-model="temp.vueComponent" />
         </el-form-item>
-        <el-form-item label="重定向" prop="vue_redirect">
-          <el-input v-model="temp.vue_redirect" />
+        <el-form-item label="重定向" prop="vueRedirect">
+          <el-input v-model="temp.vueRedirect" />
         </el-form-item>
-        <el-form-item label="图标" prop="vue_icon">
-          <el-input v-model="temp.vue_icon" />
+        <el-form-item label="图标" prop="vueIcon">
+          <el-input v-model="temp.vueIcon" />
         </el-form-item>
         <el-form-item label="类型" prop="type">
           <el-input v-model="temp.type"/>
         </el-form-item>
-        <el-form-item label="排序" prop="order_num">
-          <el-input v-model="temp.order_num" />
+        <el-form-item label="排序" prop="orderNum">
+          <el-input v-model="temp.orderNum" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -150,14 +150,14 @@
     methods: {
       getList() {
         queryMenuList(this.listQuery).then(response => {
-          this.tableData = tree(response.data,0,'parent_id')
+          this.tableData = tree(response.data,0,'parentId')
         })
       },
       handleCreateWithOutPid() {
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
-        this.temp.parent_id=0
+        this.temp.parentId=0
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -166,7 +166,7 @@
         this.resetTemp()
         this.temp.pid=row.id
         console.log(this.temp.pid)
-        this.temp.parent_id=Number(row.id)
+        this.temp.parentId=Number(row.id)
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -176,7 +176,7 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.temp.order_num=Number(this.temp.order_num)
+            this.temp.orderNum=Number(this.temp.orderNum)
             this.temp.type=Number(this.temp.type)
             createResources(this.temp).then(() => {
               this.dialogFormVisible = false
@@ -278,12 +278,12 @@
           name: '',
           status: 'published',
           pid: '',
-          vue_path: '',
-          vue_component: '',
-          vue_icon: '',
-          vue_redirect: '',
-          parent_id: 0,
-          order_num: 0,
+          vuePath: '',
+          vueComponent: '',
+          vueIcon: '',
+          vueRedirect: '',
+          parentId: 0,
+          orderNum: 0,
         },
         pid: '',
         textMap: {

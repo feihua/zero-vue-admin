@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.user_name }}
+          {{ scope.row.userName }}
         </template>
       </el-table-column>
       <el-table-column label="IP地址" >
@@ -37,12 +37,12 @@
 
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">

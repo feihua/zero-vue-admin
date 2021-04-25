@@ -72,7 +72,7 @@ const actions = {
         //   hidden: true
         // })
 
-        commit('SET_MENUS', tree(menuTreeVue,0,'parent_id'))
+        commit('SET_MENUS', tree(menuTreeVue,0,'parentId'))
         resolve(menuTreeVue)
       }).catch(error => {
         reject(error)

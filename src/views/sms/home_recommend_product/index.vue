@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.nick_name" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.nickName" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -26,12 +26,12 @@
       </el-table-column>
       <el-table-column label="商品名称">
         <template slot-scope="scope">
-          {{ scope.row.product_name }}
+          {{ scope.row.productName }}
         </template>
       </el-table-column>
       <el-table-column label="推荐状态" >
         <template slot-scope="scope">
-          <span>{{ scope.row.recommend_status }}</span>
+          <span>{{ scope.row.recommendStatus }}</span>
         </template>
       </el-table-column>
 
@@ -54,8 +54,8 @@
         <el-form-item label="用名字" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="呢称" prop="nick_name">
-          <el-input v-model="temp.nick_name"/>
+        <el-form-item label="呢称" prop="nickName">
+          <el-input v-model="temp.nickName"/>
         </el-form-item>
         <el-form-item label="手机" prop="mobile">
           <el-input v-model="temp.mobile"/>
@@ -63,8 +63,8 @@
         <el-form-item label="邮件" prop="email">
           <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item label="部门" prop="dept_id">
-          <el-input v-model="temp.dept_id"/>
+        <el-form-item label="部门" prop="deptId">
+          <el-input v-model="temp.deptId"/>
         </el-form-item>
         <el-form-item label="状态" prop="status">
         <el-radio v-model="temp.status" label="1">正常</el-radio>
@@ -143,7 +143,7 @@
           pageSize: 10,
           name: '',
           phone: '',
-          nick_name: '',
+          nickName: '',
           importance: undefined,
           title: undefined,
           type: undefined,
@@ -161,11 +161,11 @@
           email: '',
           type: '',
           mobile: '',
-          nick_name: '',
+          nickName: '',
           status: '',
           roleId: '',
           role_id: '',
-          dept_id: undefined,
+          deptId: undefined,
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -192,7 +192,7 @@
     },
     created() {
       this.getList()
-      this.getRoleList()
+
     },
     methods: {
       getList() {
@@ -318,11 +318,7 @@
       },
 
 
-      getRoleList() {
-        queryRoleList(this.listQuery).then(response => {
-          this.options=response.data
-        })
-      },
+
     }
   }
 </script>

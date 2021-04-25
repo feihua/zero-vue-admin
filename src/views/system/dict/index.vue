@@ -50,7 +50,7 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-          {{ scope.row.del_flag }}
+          {{ scope.row.delFlag }}
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -60,22 +60,22 @@
       </el-table-column>
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column label="更新人">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.lastUpdateBy }}
         </template>
       </el-table-column>
       <el-table-column label="更新时间">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.lastUpdateTime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -109,8 +109,8 @@
         <el-form-item label="排序" prop="prop">
           <el-input v-model="temp.sort"/>
         </el-form-item>
-        <el-form-item label="状态" prop="del_flag">
-          <el-input v-model="temp.del_flag"/>
+        <el-form-item label="状态" prop="delFlag">
+          <el-input v-model="temp.delFlag"/>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="temp.remarks" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input"/>
@@ -152,7 +152,7 @@
         },
         temp: {
           id: undefined,
-          del_flag: 0,
+          delFlag: 0,
           description: "",
           label: "",
           remarks: "",

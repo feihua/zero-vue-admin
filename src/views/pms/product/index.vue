@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="名字" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.phone" placeholder="手机" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.nick_name" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.nickName" placeholder="呢称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
@@ -31,12 +31,12 @@
       </el-table-column>
       <el-table-column label="促销价格" >
         <template slot-scope="scope">
-          <span>{{ scope.row.promotion_price }}</span>
+          <span>{{ scope.row.promotionPrice }}</span>
         </template>
       </el-table-column>
       <el-table-column label="市场价">
         <template slot-scope="scope">
-          {{ scope.row.original_price }}
+          {{ scope.row.originalPrice }}
         </template>
       </el-table-column>
       <el-table-column label="库存">
@@ -51,17 +51,17 @@
       </el-table-column>
       <el-table-column label="上架状态">
         <template slot-scope="scope">
-          {{ scope.row.publish_status }}
+          {{ scope.row.publishStatus }}
         </template>
       </el-table-column>
       <el-table-column label="新品状态">
         <template slot-scope="scope">
-          {{ scope.row.new_status }}
+          {{ scope.row.newStatus }}
         </template>
       </el-table-column>
       <el-table-column label="推荐状态" align="center">
         <template slot-scope="scope">
-          {{ scope.row.recommand_status }}
+          {{ scope.row.recommandStatus }}
         </template>
       </el-table-column>
       <el-table-column label="销量">
@@ -71,12 +71,12 @@
       </el-table-column>
       <el-table-column label="品牌名称">
         <template slot-scope="scope">
-          {{ scope.row.brand_name }}
+          {{ scope.row.brandName }}
         </template>
       </el-table-column>
       <el-table-column label="商品分类名称">
         <template slot-scope="scope">
-          {{ scope.row.product_category_name }}
+          {{ scope.row.productCategoryName }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -98,8 +98,8 @@
         <el-form-item label="用名字" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item label="呢称" prop="nick_name">
-          <el-input v-model="temp.nick_name"/>
+        <el-form-item label="呢称" prop="nickName">
+          <el-input v-model="temp.nickName"/>
         </el-form-item>
         <el-form-item label="手机" prop="mobile">
           <el-input v-model="temp.mobile"/>
@@ -107,8 +107,8 @@
         <el-form-item label="邮件" prop="email">
           <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item label="部门" prop="dept_id">
-          <el-input v-model="temp.dept_id"/>
+        <el-form-item label="部门" prop="deptId">
+          <el-input v-model="temp.deptId"/>
         </el-form-item>
         <el-form-item label="状态" prop="status">
         <el-radio v-model="temp.status" label="1">正常</el-radio>
@@ -146,15 +146,15 @@
   import Pagination from '@/components/Pagination'
 
   const calendarTypeOptions = [
-    { key: 'CN', display_name: 'China' },
-    { key: 'US', display_name: 'USA' },
-    { key: 'JP', display_name: 'Japan' },
-    { key: 'EU', display_name: 'Eurozone' }
+    { key: 'CN', displayName: 'China' },
+    { key: 'US', displayName: 'USA' },
+    { key: 'JP', displayName: 'Japan' },
+    { key: 'EU', displayName: 'Eurozone' }
   ]
 
   // arr to obj, such as { CN : "China", US : "USA" }
   const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-    acc[cur.key] = cur.display_name
+    acc[cur.key] = cur.displayName
     return acc
   }, {})
 
@@ -186,7 +186,7 @@
           pageSize: 10,
           name: '',
           phone: '',
-          nick_name: '',
+          nickName: '',
           importance: undefined,
           title: undefined,
           type: undefined,
@@ -204,11 +204,11 @@
           email: '',
           type: '',
           mobile: '',
-          nick_name: '',
+          nickName: '',
           status: '',
           roleId: '',
           role_id: '',
-          dept_id: undefined,
+          deptId: undefined,
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -235,7 +235,6 @@
     },
     created() {
       this.getList()
-      this.getRoleList()
     },
     methods: {
       getList() {
@@ -357,12 +356,6 @@
             type: 'info',
             message: '已取消删除'
           })
-        })
-      },
-
-      getRoleList() {
-        queryRoleList(this.listQuery).then(response => {
-          this.options=response.data
         })
       },
     }

@@ -57,22 +57,22 @@
       </el-table-column>
       <el-table-column label="创建人">
         <template slot-scope="scope">
-          {{ scope.row.create_by }}
+          {{ scope.row.createBy }}
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column label="更新人">
         <template slot-scope="scope">
-          {{ scope.row.last_update_by }}
+          {{ scope.row.lastUpdateBy }}
         </template>
       </el-table-column>
       <el-table-column label="更新时间">
         <template slot-scope="scope">
-          {{ scope.row.last_update_time }}
+          {{ scope.row.lastUpdateTime }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
@@ -363,7 +363,7 @@
 
       handleResourceUpdate(row) {
         treeList(row.id).then(response => {
-          this.treeDataList = tree(response.allData,0,'parent_id')
+          this.treeDataList = tree(response.allData,0,'parentId')
           console.log(this.treeDataList,'tree')
           this.defaultCheckedKeys = response.userData
           console.log(this.defaultCheckedKeys,'tree')
